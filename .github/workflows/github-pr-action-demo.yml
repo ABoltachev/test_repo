@@ -12,6 +12,7 @@ jobs:
           ref: main
       - name: Reset main branch
         run: |
+          echo ${{ github.event.head_commit.message }}
           git fetch origin develop:develop
           git reset --hard develop
       - name: Create Pull Request
