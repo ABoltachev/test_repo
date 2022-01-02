@@ -8,8 +8,12 @@ jobs:
     if: startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.ref}}
       - name: Create tmp branch
-        run: git fetch orign refs/for/main:tmp
+        run: git fetch orign ${{github.ref}}:tmp
       - uses: actions/checkout@v2
         with:
           ref: tmp
