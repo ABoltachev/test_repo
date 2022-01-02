@@ -20,3 +20,4 @@ jobs:
           commit-message: update main branch
           title: Update main branch
           branch: temp
+          delete-branch: true
