@@ -1,15 +1,18 @@
-name: Run the Action on each commit
-on:
-  push:
-    branches-ignore: master
+name: Create pull request
+on: push
 jobs:
-  action-pull-request:
+  createPullRequest:
+    if: startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Create pull request
-        uses: devops-infra/action-pull-request@v0.4.2
+      - uses: actions/checkout@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          title: Automatic pull request
+          ref: ${{github.ref}}
+      - name: Reset ref branch
+        run:
+          git fetch origin main:main
+          git reset --hard main
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: main
