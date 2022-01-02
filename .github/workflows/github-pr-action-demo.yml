@@ -2,18 +2,21 @@ name: Create pull request
 on:
   push:
     branches:
-      - main
+      - develop
 jobs:
-  createPullRequest:
-    if: startsWith(github.ref, 'refs/heads/')
+  prForMainBranch:
     runs-on: ubuntu-latest
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{github.ref}}
-      - name: Create tmp branch
-        run: git fetch orign ${{github.ref}}:tmp
       - uses: actions/checkout@v2
         with:
-          ref: tmp
+          ref: main
+      - name: Reset main branch
+        run: |
+          git fetch origin develop:develop
+          git reset --hard develop
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: update main branch
+          title: Update main branch
+          branch: temp
